@@ -2,51 +2,76 @@ name: Build Cordova Android APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      # 1. Repository Code Fetch
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up Java JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      # 2. Setup Java JDK 17 (Required for modern Cordova & Android SDK)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      # 3. Setup Node.js v20 (LTS Stable)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+      # 4. Setup Android SDK Tools & Licenses
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-    - name: Create and Build Cordova Project
-      run: |
-        npm install -g cordova
-        
-        # Fresh Cordova Project Create Karein
-        cordova create app com.alipardahouse.app AliPardaHouse
-        
-        # HTML, CSS, JS, Drive files aur config.xml ko cordova www folder mein copy karein
-        cp -r *.html *.js *.css assets images app/www/ 2>/dev/null || true
-        
-        if [ -f "config.xml" ]; then
-          cp config.xml app/config.xml
-        fi
-        
-        # Project Directory ke andar ja kar Platform Add aur Build karein
-        cd app
-        cordova platform add android
-        cordova build android --verbose
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: AliPardaHouse-APK
-        path: app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+      # 5. Fix Missing Folders & Files (Ensures no path errors)
+      - name: Prepare Project Directory Structure
+        run: |
+          mkdir -p www
+          mkdir -p images
+          mkdir -p gallery
+          # Copy root HTML/CSS assets into www if www is empty
+          cp -r index.html drive.html images config.xml www/ 2>/dev/null || true
+
+      # 6. Install Cordova & Dependencies
+      - name: Install Cordova & CLI Tools
+        run: |
+          npm install -g cordova@12.0.0
+          npm install
+
+      # 7. Add Stable Android Platform (Avoids cordova-android@15 gradle bug)
+      - name: Add Cordova Android Platform
+        run: |
+          cordova platform remove android --nosave || true
+          cordova platform add android@12.0.0 --save
+
+      # 8. Build APK with Extended Memory & Gradle Fixes
+      - name: Build Android Release APK
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+          CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL: "https://services.gradle.org/distributions/gradle-8.4-bin.zip"
+        run: |
+          cordova build android --release --no-telemetry
+
+      # 9. Find & Upload APK Artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ali-Parda-House-App
+          path: |
+            platforms/android/app/build/outputs/apk/release/*.apk
+            platforms/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7
