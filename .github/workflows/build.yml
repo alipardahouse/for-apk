@@ -26,28 +26,27 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Prepare & Build Cordova Project
+    - name: Create and Build Cordova Project
       run: |
         npm install -g cordova
         
-        # Check karein ke config.xml kahan hai
-        if [ ! -f "config.xml" ]; then
-          echo "Config.xml root mein nahi hai, auto-setup create kar rahe hain..."
-          cordova create cordovaApp com.alipardahouse.app AliPardaHouse
-          
-          # HTML/JS/CSS files ko cordovaApp/www mein copy karein
-          cp -r *.html *.js *.css assets images www cordovaApp/www/ 2>/dev/null || true
-          cp config.xml cordovaApp/ 2>/dev/null || true
-          
-          cd cordovaApp
+        # Fresh Cordova Project Create Karein
+        cordova create app com.alipardahouse.app AliPardaHouse
+        
+        # HTML, CSS, JS, Drive files aur config.xml ko cordova www folder mein copy karein
+        cp -r *.html *.js *.css assets images app/www/ 2>/dev/null || true
+        
+        if [ -f "config.xml" ]; then
+          cp config.xml app/config.xml
         fi
         
-        # Cordova Android Platform Add aur Build karein
-        cordova platform add android --skip-link || true
+        # Project Directory ke andar ja kar Platform Add aur Build karein
+        cd app
+        cordova platform add android
         cordova build android --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: AliPardaHouse-APK
-        path: "**/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+        path: app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
