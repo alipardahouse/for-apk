@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.alipardahouse.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets">
+    <name>Alipardahouse</name>
+    <description>Ali Parda House Offline App</description>
+    <author email="support@alipardahouse.com">Ali Parda House</author>
+    
+    <!-- App Startup Page -->
+    <content src="index.html" />
+    
+    <!-- Offline Permissions & Access -->
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    
+    <!-- App Preferences -->
+    <preference name="Orientation" value="default" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="BackgroundColor" value="#ffffff" />
+    
+    <!-- Custom App Icon Path -->
+    <icon src="images/icon.png" />
+</widget>
