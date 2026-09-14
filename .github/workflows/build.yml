@@ -26,15 +26,23 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Build Cordova APK
+    - name: Prepare & Build Cordova Project
       run: |
         npm install -g cordova
-        # Agar Cordova project initialize na ho to auto-create karein
+        
+        # Check karein ke config.xml kahan hai
         if [ ! -f "config.xml" ]; then
-          cordova create myApp com.alipardahouse.app AliPardaHouse
-          cp -r www/* myApp/www/ 2>/dev/null || true
-          cd myApp
+          echo "Config.xml root mein nahi hai, auto-setup create kar rahe hain..."
+          cordova create cordovaApp com.alipardahouse.app AliPardaHouse
+          
+          # HTML/JS/CSS files ko cordovaApp/www mein copy karein
+          cp -r *.html *.js *.css assets images www cordovaApp/www/ 2>/dev/null || true
+          cp config.xml cordovaApp/ 2>/dev/null || true
+          
+          cd cordovaApp
         fi
+        
+        # Cordova Android Platform Add aur Build karein
         cordova platform add android --skip-link || true
         cordova build android --verbose
 
