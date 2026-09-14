@@ -23,14 +23,23 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Cordova & Build Android APK
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Build Cordova APK
       run: |
         npm install -g cordova
-        cordova platform add android
+        # Agar Cordova project initialize na ho to auto-create karein
+        if [ ! -f "config.xml" ]; then
+          cordova create myApp com.alipardahouse.app AliPardaHouse
+          cp -r www/* myApp/www/ 2>/dev/null || true
+          cd myApp
+        fi
+        cordova platform add android --skip-link || true
         cordova build android --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: AliPardaHouse-APK
-        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        path: "**/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
