@@ -1,25 +1,46 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.alipardahouse.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>Ali Parda House</name>
+<?xml me='1.0' encoding='utf-8'?>
+<widget id="com.example.myhtmlapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <!-- App Ka Name -->
+    <name>My HTML App</name>
+
+    <!-- App Ki Description -->
+    <description>
+        A sample Apache Cordova application built with HTML, CSS, and JS.
+    </description>
+
+    <!-- Author Info -->
+    <author email="dev@example.com" href="https://example.com">
+        Your Name / Company
+    </author>
+
+    <!-- Main Entry Point (Main HTML File Path) -->
     <content src="index.html" />
 
-    <!-- App Icon Path (Relative Path Fixed) -->
-    
-
-    <!-- Google Drive Images Access Permissions -->
+    <!-- External URLs and Security Access -->
     <access origin="*" />
-    <allow-navigation href="*" />
-    <allow-intent href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
 
+    <!-- Android Specific Settings -->
     <platform name="android">
-        <!-- Automatic Manifest Injections for Fast Network Access -->
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:usesCleartextTraffic="true" />
-        </edit-config>
+        <allow-intent href="market:*" />
+        
+        <!-- App Icon Config (www/img/icon.png path par image honi chahiye) -->
+        <!-- <icon src="www/img/icon.png" /> -->
 
-        <config-file parent="/manifest" target="AndroidManifest.xml">
-            <uses-permission android:name="android.permission.INTERNET" />
-            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        </config-file>
+        <!-- Orientation Preference: default, portrait, ya landscape -->
+        <preference name="Orientation" value="default" />
+        
+        <!-- Minimum and Target Android SDK Versions -->
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="34" />
     </platform>
+
+    <!-- Preferences -->
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="BackgroundColor" value="0xffffffff" />
 </widget>
