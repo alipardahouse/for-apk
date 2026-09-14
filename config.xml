@@ -4,7 +4,7 @@
     <content src="index.html" />
 
     <!-- App Icon Path (Relative Path Fixed) -->
-    <icon src="https://drive.google.com/file/d/1kM9qr8CKf9uMBLkTLrcRKpKfd6OlrwFd/view?usp=drivesdk" />
+    <icon src="icon.png" />
 
     <!-- Google Drive Images Access Permissions -->
     <access origin="*" />
