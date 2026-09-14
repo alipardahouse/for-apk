@@ -3,8 +3,8 @@
     <name>Ali Parda House</name>
     <content src="index.html" />
 
-    <!-- App Icon Path -->
-    <icon src="images/icon.png" />
+    <!-- App Icon Path (Relative Path Fixed) -->
+    <icon src="./images/icon.png" />
 
     <!-- Google Drive Images Access Permissions -->
     <access origin="*" />
