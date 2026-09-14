@@ -4,7 +4,7 @@
     <content src="index.html" />
 
     <!-- App Icon Path (Relative Path Fixed) -->
-    <icon src="icon.png" />
+    
 
     <!-- Google Drive Images Access Permissions -->
     <access origin="*" />
