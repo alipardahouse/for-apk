@@ -1,15 +1,14 @@
-name: Build Cordova APK
+name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
-  workflow_dispatch: # Direct GitHub Actions tab se manual run karne ke liye
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
@@ -19,33 +18,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: '22'
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Cordova CLI
+      - name: Install Cordova
         run: npm install -g cordova
 
-      - name: Install Project Dependencies
-        run: npm ci || npm install
-
-      # Android platform add karein agar pehle se repository mein commit nahi hai
-      - name: Add Android Platform
-        run: cordova platform add android --nosave || true
-
-      - name: Build Debug APK
-        run: cordova build android --debug
+      - name: Build Cordova Project
+        run: |
+          cordova create build_app com.alipardahouse.app "Alipardahouse"
+          rm -rf build_app/www/*
+          cp -r index.html images build_app/www/
+          cp config.xml build_app/
+          mkdir -p build_app/images
+          cp images/icon.png build_app/images/
+          cd build_app
+          cordova platform add android
+          cordova build android --debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cordova-debug-apk
-          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-debug.apk
+          path: build_app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
