@@ -17,13 +17,10 @@
     <preference name="Fullscreen" value="false" />
     <preference name="BackgroundColor" value="#ffffff" />
     
+    <!-- Disable Native Splash Delay for HTML Splash -->
+    <preference name="SplashScreenDelay" value="0" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    
     <!-- Custom App Icon Path -->
     <icon src="images/icon.png" />
-    
-    <!-- Splash Screen Settings -->
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="3000" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="images/splash.png" />
-    <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
 </widget>
