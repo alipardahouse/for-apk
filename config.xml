@@ -14,4 +14,17 @@
 <preference name="BackgroundColor" value="#ffffff"/>
 <!--  Custom App Icon Path  -->
 <icon src="images/icon.png"/>
+
+
+
+
+  <!-- Splash Screen Settings -->
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="3000" /> <!-- 3 seconds -->
+    <preference name="AutoHideSplashScreen" value="true" />
+    
+    <!-- Splash Image Path -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="images/splash.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
+</widget>
 </widget>
