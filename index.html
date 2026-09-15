@@ -1201,8 +1201,7 @@ nav {
     <div class="curtain-card"><img src="images/t7.jpg" alt="Tie Hook 7" data-target="accessories.html"></div>
     <div class="curtain-card"><img src="images/t8.jpg" alt="Tie Hook 8" data-target="accessories.html"></div>
     <div class="curtain-card"><img src="images/t9.jpg" alt="Tie Hook 9" data-target="accessories.html"></div>
-    <div class="curtain-card"><img src="images/t10.jpg" alt="Tie Hook 10" data-target="accessories.html"></div>
-  </div>
+      </div>
 </div>
 
 <div class="section-divider"></div>
@@ -2110,5 +2109,23 @@ lbInner.addEventListener('touchend', function(e) {
   });
 })();
 </script>
+<!-- Cordova Core Script -->
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- Back Button Exit Confirmation -->
+    <script type="text/javascript">
+        document.addEventListener('deviceready', function() {
+            document.addEventListener('backbutton', function(e) {
+                e.preventDefault();
+                if (confirm("Are you sure you want to exit?")) {
+                    navigator.app.exitApp();
+                }
+            }, false);
+        }, false);
+    </script>
+
+
+
+  
 </body>
 </html>
